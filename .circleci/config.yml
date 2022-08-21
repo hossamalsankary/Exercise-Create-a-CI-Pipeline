@@ -27,9 +27,7 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
-      - add_ssh_keys:
-          # You can get this ID in the section where you registered the SSH Key
-          fingerprints: ["2a:d0:04:42:d2:de:33:57:c5:60:b4:f6:e1:c3:7c:44"]
+
       - run:
           name: Install Ansible
           command: |
@@ -38,7 +36,8 @@ jobs:
           name: Run Playbook and Configure server
           command: |
             apk add --update ansible
-            ansible-playbook -i Inventory.txt  main-remote.yml
+            chmod 400 ansable.pem
+            ansible-playbook main-remote.yml -i Inventory.txt  --private-key ansable.pem
 # Sequential workflow
 workflows:
   myWorkflow:
